@@ -1,0 +1,35 @@
+rsyncd:
+    container_name: rsyncd
+    restart: always
+    environment: 
+        # (optional) - use only if non-default values should be used
+        RSYNC_TIMEOUT: 300
+        RSYNC_PORT: 873
+        RSYNC_MAX_CONNECTIONS: 10
+
+        # (optional) - global username and password
+        RSYNC_PASSWORD: foobar
+        RSYNC_USERNAME: rsync
+        
+        # ID_NAME is the only required parameter for each rsync module
+        MOD1_NAME: Backup_From
+        MOD1_ALLOW: 192.168.1.0/24
+        MOD1_READ_ONLY: "true"
+        MOD1_VOLUME: /vol2
+        MOD2_EXCLUDE: /backup
+        MOD2_USERNAME: test
+        MOD2_PASSWORD: secret
+        MOD2_UID: nobody
+        MOD2_GID: nobody
+
+        MOD2_NAME: Backup_To
+        MOD2_ALLOW: 192.168.1.0/24
+        MOD2_VOLUME: /vol
+        MOD2_READ_ONLY: "false"
+
+    volumes:
+        - /data:/vol2
+        - /data/backup:/vol
+    ports:
+        - "873:873"
+    image: jazzdd/rsyncd
