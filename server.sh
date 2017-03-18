@@ -68,7 +68,7 @@ for name in $(env | grep ".*_NAME.*"); do
     secrets file = /etc/rsyncd.secrets
 __EOF__
 
-    cat << __EOF__ >> /etc/rsyncd.excludes_%rs_name
+    cat << __EOF__ >> /etc/rsyncd.excludes_$rs_name
 *.!sync
 *.swp
 $rs_exclude
