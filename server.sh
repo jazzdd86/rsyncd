@@ -46,7 +46,6 @@ for name in $(env | grep ".*_NAME.*"); do
     : ${rs_pw:=$RSYNC_PASSWORD}
 
     echo $rs_name $rs_uid $rs_gid $rs_allow $rs_readonly $rs_vol $rs_user $rs_pw $rs_exclude
-
     cat << __EOF__ >> /etc/rsyncd.conf
 
 # MODULE OPTIONS
@@ -64,14 +63,8 @@ for name in $(env | grep ".*_NAME.*"); do
     log format = %t: host %h (%a) %o %f (%l bytes). Total %b bytes.
     refuse options = checksum dry-run
     dont compress = *.gz *.tgz *.zip *.z *.rpm *.deb *.iso *.bz2 *.tbz
-    exclude from = /etc/rsyncd.excludes_$rs_name
+    exclude = $rs_exclude *.!sync *.swp
     secrets file = /etc/rsyncd.secrets
-__EOF__
-
-    cat << __EOF__ >> /etc/rsyncd.excludes_$rs_name
-*.!sync
-*.swp
-$rs_exclude
 __EOF__
 
     if [ ! $rs_user = "" ]; then
