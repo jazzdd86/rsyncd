@@ -64,14 +64,14 @@ for name in $(env | grep ".*_NAME.*"); do
     log format = %t: host %h (%a) %o %f (%l bytes). Total %b bytes.
     refuse options = checksum dry-run
     dont compress = *.gz *.tgz *.zip *.z *.rpm *.deb *.iso *.bz2 *.tbz
-    exclude from = /etc/rsyncd.excludes
+    exclude from = /etc/rsyncd.excludes_$rs_name
     secrets file = /etc/rsyncd.secrets
 __EOF__
 
-    cat << __EOF__ >> /etc/rsyncd.excludes
-$rs_exclude
+    cat << __EOF__ >> /etc/rsyncd.excludes_%rs_name
 *.!sync
 *.swp
+$rs_exclude
 __EOF__
 
     if [ ! $rs_user = "" ]; then
